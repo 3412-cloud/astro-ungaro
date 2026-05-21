@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EL ASTROUNGARO IRREFLEXIVO PARA REFLEXIONAR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #e0dcd0;
+      line-height: 1.7;
+    }
+
+    /* ===== BORDE DE CÍRCULOS ALTERNADOS ===== */
+    /* barras laterales fijas */
+    .border-left, .border-right {
+      position: fixed;
+      top: 0;
+      width: 36px;  /* ~3cm en pantallas típicas */
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .border-left  { left: 0; }
+    .border-right { right: 0; }
+
+    .circle-stripe {
+      flex: 1;
+      min-height: 36px;
+      width: 100%;
+    }
+    .circle-stripe.rojo  { background: #8b1a1a; }
+    .circle-stripe.negro { background: #1a1a1a; }
+
+    /* header con espacio para el borde */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 4rem;
+      position: relative;
+      background: radial-gradient(ellipse at center, #1a0e0e 0%, #0a0a0a 70%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 40%, rgba(139,26,26,0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 60%, rgba(139,26,26,0.05) 0%, transparent 50%);
+      animation: aurora 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes aurora {
+      0%   { transform: translate(0,0) rotate(0deg); }
+      50%  { transform: translate(-5%,5%) rotate(5deg); }
+      100% { transform: translate(5%,-5%) rotate(-5deg); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #d43b3b;
+      text-shadow: 0 0 60px rgba(212,59,59,0.3);
+      position: relative;
+      z-index: 1;
+      line-height: 1.15;
+    }
+
+    .hero h1 span {
+      display: block;
+      font-size: clamp(1rem, 2.5vw, 1.8rem);
+      font-weight: 300;
+      color: #e0dcd0;
+      letter-spacing: 0.3em;
+      text-transform: none;
+      margin-top: 1rem;
+      text-shadow: none;
+    }
+
+    .hero .subtitle {
+      margin-top: 2rem;
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-weight: 300;
+      color: #a09080;
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
+      font-style: italic;
+    }
+
+    .hero .scroll-hint {
+      margin-top: 3rem;
+      animation: bounce 2s infinite;
+      font-size: 2rem;
+      color: #8b1a1a;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(10px); }
+    }
+
+    /* ===== SECCIONES ===== */
+    section {
+      padding: 5rem 4rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #d43b3b;
+      margin-bottom: 2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #8b1a1a;
+      display: inline-block;
+    }
+
+    .section-content {
+      margin-top: 1.5rem;
+    }
+
+    /* ===== REFLEXIONES ===== */
+    .reflexion {
+      background: rgba(139,26,26,0.06);
+      border-left: 4px solid #8b1a1a;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .reflexion p {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #c0b8a8;
+    }
+
+    .reflexion .fecha {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: #6b5a4a;
+      font-style: normal;
+    }
+
+    /* ===== PROYECTOS ===== */
+    .proyecto {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid #2a2a2a;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+
+    .proyecto:hover {
+      border-color: #8b1a1a;
+    }
+
+    .proyecto h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #d43b3b;
+      margin-bottom: 0.5rem;
+    }
+
+    .proyecto p {
+      color: #a09080;
+      font-size: 0.95rem;
+    }
+
+    .proyecto .etiquetas {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .proyecto .etiqueta {
+      background: #8b1a1a;
+      color: #e0dcd0;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ===== ÁLBUM (fotos & videos) ===== */
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .album-item {
+      aspect-ratio: 1;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #6b5a4a;
+      font-size: 0.85rem;
+      transition: border-color 0.3s;
+      cursor: pointer;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .album-item:hover {
+      border-color: #8b1a1a;
+      color: #d43b3b;
+    }
+
+    .album-item .icono {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ===== MISCELÁNEOS ===== */
+    .misc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .misc-item {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid #2a2a2a;
+      padding: 1.25rem;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+
+    .misc-item:hover {
+      border-color: #8b1a1a;
+    }
+
+    .misc-item h4 {
+      color: #d43b3b;
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .misc-item p {
+      color: #a09080;
+      font-size: 0.9rem;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 3rem 4rem;
+      color: #4a3a2a;
+      font-size: 0.85rem;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    footer a {
+      color: #8b1a1a;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #d43b3b;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      section {
+        padding: 3rem 1.5rem;
+      }
+      .hero {
+        padding: 2rem 1.5rem;
+      }
+      .border-left, .border-right {
+        width: 24px;
+      }
+      .circle-stripe {
+        min-height: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BORDES DE CÍRCULOS ROJO Y NEGRO -->
+  <div class="border-left" id="borderLeft"></div>
+  <div class="border-right" id="borderRight"></div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <h1>
+      EL ASTROUNGARO<br>IRREFLEXIVO
+      <span>para reflexionar</span>
+    </h1>
+    <p class="subtitle">
+      — Reflexiones, proyectos, fotos, videos y misceláneos de un Ungaro perdido en el cosmos —
+    </p>
+    <div class="scroll-hint">⌄</div>
+  </header>
+
+  <!-- REFLEXIONES -->
+  <section id="reflexiones">
+    <h2>Reflexiones</h2>
+    <div class="section-content">
+      <div class="reflexion">
+        <p>"Lo irreflexivo también es una forma de pensamiento. Solo que más honesta."</p>
+        <span class="fecha">— Astroungaro, 2026</span>
+      </div>
+      <div class="reflexion">
+        <p>"A veces el círculo rojo solo quiere estar al lado del negro. Sin más razón que el contraste."</p>
+        <span class="fecha">— Astroungaro, 2026</span>
+      </div>
+      <div class="reflexion">
+        <p>"Un proyecto no se termina. Se abandona con estilo."</p>
+        <span class="fecha">— Astroungaro, 2025</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section id="proyectos">
+    <h2>Proyectos</h2>
+    <div class="section-content">
+      <div class="proyecto">
+        <h3>Los Tres Enanos Rojos</h3>
+        <p>Infraestructura de redes y agentes autónomos entre RPi5, HP y ASUS. Docker Swarm, Hermes Agent, OpenClaw.</p>
+        <div class="etiquetas">
+          <span class="etiqueta">DevOps</span>
+          <span class="etiqueta">AI</span>
+          <span class="etiqueta">Redes</span>
+        </div>
+      </div>
+      <div class="proyecto">
+        <h3>Radio Streaming con Icecast</h3>
+        <p>Emisora online montada con Icecast + Liquidsoap. Música 24/7 desde el HP.</p>
+        <div class="etiquetas">
+          <span class="etiqueta">Streaming</span>
+          <span class="etiqueta">Linux</span>
+        </div>
+      </div>
+      <div class="proyecto">
+        <h3>Astroungaro.xyz</h3>
+        <p>Este mismo sitio. Una página para el Ungaro que lleva dentro.</p>
+        <div class="etiquetas">
+          <span class="etiqueta">Web</span>
+          <span class="etiqueta">Personal</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÁLBUM: FOTOS & VIDEOS -->
+  <section id="album">
+    <h2>Álbum</h2>
+    <p style="color:#6b5a4a; margin-bottom:1.5rem;">Fotos y videos del Astroungaro y sus andanzas.</p>
+    <div class="album-grid">
+      <div class="album-item">
+        <div class="icono">📸</div>
+        <div>Foto 1</div>
+      </div>
+      <div class="album-item">
+        <div class="icono">📸</div>
+        <div>Foto 2</div>
+      </div>
+      <div class="album-item">
+        <div class="icono">📹</div>
+        <div>Video 1</div>
+      </div>
+      <div class="album-item">
+        <div class="icono">📸</div>
+        <div>Foto 3</div>
+      </div>
+      <div class="album-item">
+        <div class="icono">📹</div>
+        <div>Video 2</div>
+      </div>
+      <div class="album-item">
+        <div class="icono">➕</div>
+        <div>Añadir foto/video</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISCELÁNEOS -->
+  <section id="miscelaneos">
+    <h2>Misceláneos</h2>
+    <div class="section-content">
+      <div class="misc-grid">
+        <div class="misc-item">
+          <h4>Enlaces varios</h4>
+          <p>Cosas sueltas que no tienen cabida en ningún otro lado pero merecen estar.</p>
+        </div>
+        <div class="misc-item">
+          <h4>Log de cosas raras</h4>
+          <p>Acontecimientos extraños, descubrimientos aleatorios, notas sueltas.</p>
+        </div>
+        <div class="misc-item">
+          <h4>Comandos útiles</h4>
+          <p>Fragmentos de terminal, scripts, one-liners que salvaron el día.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>✨ EL ASTROUNGARO IRREFLEXIVO PARA REFLEXIONAR ✨</p>
+    <p>Hecho a mano por un Ungaro · <a href="#">@astroungaro</a></p>
+  </footer>
+
+  <script>
+    // Generar las barras de círculos rojo/negro alternados
+    function generarCirculos(container) {
+      const num = Math.floor(window.innerHeight / 36);
+      for (let i = 0; i < num; i++) {
+        const div = document.createElement('div');
+        div.className = 'circle-stripe ' + (i % 2 === 0 ? 'rojo' : 'negro');
+        container.appendChild(div);
+      }
+    }
+    generarCirculos(document.getElementById('borderLeft'));
+    generarCirculos(document.getElementById('borderRight'));
+
+    // Recalcular en resize
+    window.addEventListener('resize', () => {
+      document.getElementById('borderLeft').innerHTML = '';
+      document.getElementById('borderRight').innerHTML = '';
+      generarCirculos(document.getElementById('borderLeft'));
+      generarCirculos(document.getElementById('borderRight'));
+    });
+  </script>
+</body>
+</html>
